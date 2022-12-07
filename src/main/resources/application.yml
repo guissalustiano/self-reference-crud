@@ -1,1 +1,14 @@
-
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/redosul
+    username: postgres
+    password: "password"
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show_sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  jackson:
+    deserialization:
+      USE_LONG_FOR_INTS: true
