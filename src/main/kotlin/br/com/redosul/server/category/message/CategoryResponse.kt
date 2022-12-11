@@ -4,6 +4,7 @@ import br.com.redosul.server.category.Category
 import java.time.ZonedDateTime
 
 data class CategoryResponse(
+    val parentId: Long?,
     val id: Long,
     val code: String,
     val name: String,
@@ -14,6 +15,7 @@ data class CategoryResponse(
 )
 
 fun Category.toResponse() = CategoryResponse(
+    parent?.getId()?.value,
     getId().value,
     code.value,
     name.value,

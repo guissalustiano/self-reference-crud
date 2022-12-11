@@ -3,10 +3,7 @@ package br.com.redosul.server.category.controller
 import br.com.redosul.server.category.message.CategoryCreateRequest
 import br.com.redosul.server.category.message.toEntity
 import br.com.redosul.server.category.message.toResponse
-import br.com.redosul.server.category.service.CategoryCreate
-import br.com.redosul.server.category.service.CategoryDelete
-import br.com.redosul.server.category.service.CategorySearchAll
-import br.com.redosul.server.category.service.CategoryFindOne
+import br.com.redosul.server.category.service.*
 import br.com.redosul.server.category.type.CategoryId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -42,7 +39,7 @@ class CategoryController(
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
         @RequestBody request: CategoryCreateRequest
-    ) = create(request.toEntity()).getOrThrow().toResponse()
+    ) = request.toEntity().let { (parentId, category) -> create(parentId, category) }.toResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.NO_CONTENT)

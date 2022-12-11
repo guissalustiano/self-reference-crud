@@ -3,9 +3,11 @@ package br.com.redosul.server.category.message
 import br.com.redosul.server.base.type.*
 import br.com.redosul.server.category.Category
 import br.com.redosul.server.category.exception.CategoryException
+import br.com.redosul.server.category.type.CategoryId
 import com.fasterxml.jackson.annotation.JsonCreator
 
 data class CategoryCreateRequest(
+    val parentId: CategoryId?,
     val code: Code,
     val name: Name,
     val description: Description?,
@@ -15,6 +17,7 @@ data class CategoryCreateRequest(
         @JvmStatic
         @JsonCreator
         fun fromJson(
+            parentId: Long?,
             code: String?,
             name: String?,
             description: String?,
@@ -22,6 +25,7 @@ data class CategoryCreateRequest(
         ): CategoryCreateRequest {
             val tName = name?.let { Name(it).getOrThrow() } ?: throw CategoryException.Required.Name
             return CategoryCreateRequest(
+                parentId?.let { CategoryId(it) },
                 code?.let { Code(it).getOrThrow() } ?: throw CategoryException.Required.Code,
                 tName,
                 description?.let { Description(it) },
@@ -31,7 +35,7 @@ data class CategoryCreateRequest(
     }
 }
 
-fun CategoryCreateRequest.toEntity() = Category(
+fun CategoryCreateRequest.toEntity() = parentId to Category(
     code,
     name,
     description,

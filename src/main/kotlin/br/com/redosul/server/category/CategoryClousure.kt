@@ -7,12 +7,11 @@ import jakarta.persistence.*
 
 @Entity
 class CategoryClousure(
-    parentId: CategoryId = CategoryId.ZERO,
-    childId: CategoryId = CategoryId.ZERO,
-): EmbbededIdEntity<CategoryClousureId>(CategoryClousureId(parentId.value, childId.value)) {
+    id: CategoryClousureId = CategoryClousureId.ZERO,
+    @Column var depth: UInt
+) : EmbbededIdEntity<CategoryClousureId>(id) {
     val parentId: CategoryId
         get() = CategoryId(id.parentId)
-
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,7 +22,13 @@ class CategoryClousure(
     @MapsId("childId")
     lateinit var child: Category
 
-    constructor(parent: Category, child: Category): this(parent.getId(), child.getId()) {
+    constructor(parent: Category, child: Category, depth: UInt) : this(
+        CategoryClousureId(
+            parent.getId().value,
+            child.getId().value
+        ),
+        depth
+    ) {
         this.parent = parent
         this.child = child
     }

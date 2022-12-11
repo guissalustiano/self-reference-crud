@@ -18,16 +18,29 @@ class Category(
     id: CategoryId = CategoryId.ZERO,
 ): LongIdEntity(id.value) {
     fun getId() = CategoryId(id)
+    fun addChildConnection(connection: CategoryClousure) {
+        _children.add(connection)
+    }
 
-    @OneToMany(mappedBy = "parent")
-    private lateinit var _parents: List<CategoryClousure>
+    fun addParentConnection(connection: CategoryClousure) {
+        _parents.add(connection)
+    }
+
+    val depth: UInt
+        get() = _parents.first().depth
 
     @OneToMany(mappedBy = "child")
-    private lateinit var _children: List<CategoryClousure>
+    private var _parents: MutableList<CategoryClousure> = mutableListOf()
 
-    val parents: List<Category>
-        get() = _parents.map { it.parent }
+    @OneToMany(mappedBy = "parent")
+    private var _children: MutableList<CategoryClousure> = mutableListOf()
+
+    private val parents: List<Category>
+        get() = _parents.map { it.parent }.filterNot { it == this }
+
+    val parent: Category?
+        get() = parents.firstOrNull { it.depth > 0u && it.depth == depth - 1u }
 
     val children: List<Category>
-        get() = _children.map { it.child }
+        get() = _children.map { it.child }.filterNot { it == this }
 }

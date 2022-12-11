@@ -11,5 +11,5 @@ class CategorySearchAll(
 ) {
     operator fun invoke(
         nameQuery: String? = null
-    ): Iterable<Category> = repository.search(nameQuery)
+    ) = repository.search(nameQuery)
 }

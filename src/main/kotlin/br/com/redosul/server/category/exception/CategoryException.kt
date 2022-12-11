@@ -6,6 +6,8 @@ import br.com.redosul.server.base.type.Name as TName
 import br.com.redosul.server.base.type.Slug as TSlug
 
 sealed class CategoryException: Exception() {
+    class TooDepth(val depth: UInt) : CategoryException()
+
     data class NotFound(val id: CategoryId) : CategoryException()
 
     sealed class Required: CategoryException() {
@@ -18,4 +20,5 @@ sealed class CategoryException: Exception() {
         data class Name(val name: TName): AlreadyExist()
         data class Slug(val name: TSlug): AlreadyExist()
     }
+
 }

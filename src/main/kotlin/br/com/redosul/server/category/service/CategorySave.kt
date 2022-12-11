@@ -2,15 +2,12 @@ package br.com.redosul.server.category.service
 
 import br.com.redosul.server.category.Category
 import br.com.redosul.server.category.exception.CategoryException
-import br.com.redosul.server.category.repository.CategoryClousureRepository
-import br.com.redosul.server.category.repository.CategoryJpaRepository
 import br.com.redosul.server.category.repository.CategoryRepository
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
 class CategorySave(
     private val repository: CategoryRepository,
 ) {
