@@ -5,10 +5,9 @@ import org.springframework.data.util.ProxyUtils
 import java.io.Serializable
 
 @MappedSuperclass
-abstract class EmbbededIdEntity<T: Serializable>(id: T? = null) : BaseEntity() {
+abstract class EmbbededIdEntity<T: Serializable>(id: T) : BaseEntity() {
     @EmbeddedId
-    var id: T? = id
-        protected set
+    protected var id: T = id
 
     override fun equals(other: Any?): Boolean {
         other ?: return false

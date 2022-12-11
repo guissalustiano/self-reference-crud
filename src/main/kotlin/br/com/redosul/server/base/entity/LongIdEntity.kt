@@ -7,8 +7,7 @@ import org.springframework.data.util.ProxyUtils
 abstract class LongIdEntity(id: Long) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = id
-        protected set
+    protected var id: Long = id
 
     override fun equals(other: Any?): Boolean {
         other ?: return false

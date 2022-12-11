@@ -14,11 +14,11 @@ data class CategoryResponse(
 )
 
 fun Category.toResponse() = CategoryResponse(
-    id,
-    code,
-    name,
-    description,
-    slug,
+    getId().value,
+    code.value,
+    name.value,
+    description?.value,
+    slug.value,
     createdAt,
     updatedAt,
 )

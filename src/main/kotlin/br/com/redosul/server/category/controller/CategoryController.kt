@@ -7,6 +7,7 @@ import br.com.redosul.server.category.service.CategoryCreate
 import br.com.redosul.server.category.service.CategoryDelete
 import br.com.redosul.server.category.service.CategorySearchAll
 import br.com.redosul.server.category.service.CategoryFindOne
+import br.com.redosul.server.category.type.CategoryId
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -35,7 +36,7 @@ class CategoryController(
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getOne(
         @PathVariable("id") categoryId: Long
-    ) = findOne(categoryId).getOrThrow().toResponse()
+    ) = findOne(CategoryId(categoryId)).getOrThrow().toResponse()
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
@@ -47,5 +48,5 @@ class CategoryController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun del(
         @PathVariable("id") categoryId: Long
-    ) = delete(categoryId)
+    ) = delete(CategoryId(categoryId))
 }
