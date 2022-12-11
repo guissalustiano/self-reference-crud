@@ -11,5 +11,6 @@ class Product(
     @NaturalId var code: String,
     @Column var name: String,
     @Column var description: String?,
+    @NaturalId var slug: String = name.toSlug(),
     id: Long = 0,
 ): LongIdEntity(id)
