@@ -1,6 +1,7 @@
 package br.com.redosul.server.category.message
 
 import br.com.redosul.server.category.Category
+import java.time.ZonedDateTime
 
 data class CategoryResponse(
     val id: Long,
@@ -8,6 +9,8 @@ data class CategoryResponse(
     val name: String,
     val description: String?,
     val slug: String,
+    val createdAt: ZonedDateTime,
+    val updatedAt: ZonedDateTime,
 )
 
 fun Category.toResponse() = CategoryResponse(
@@ -16,4 +19,6 @@ fun Category.toResponse() = CategoryResponse(
     name,
     description,
     slug,
+    createdAt,
+    updatedAt,
 )
