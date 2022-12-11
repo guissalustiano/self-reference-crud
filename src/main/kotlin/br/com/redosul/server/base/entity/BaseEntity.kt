@@ -1,4 +1,4 @@
-package br.com.redosul.server.base
+package br.com.redosul.server.base.entity
 
 import jakarta.persistence.*
 import org.springframework.data.util.ProxyUtils

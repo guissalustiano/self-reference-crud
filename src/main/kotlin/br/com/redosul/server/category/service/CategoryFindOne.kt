@@ -1,7 +1,7 @@
 package br.com.redosul.server.category.service
 
-import br.com.redosul.server.category.CategoryException
-import br.com.redosul.server.category.CategoryRepository
+import br.com.redosul.server.category.exception.CategoryException
+import br.com.redosul.server.category.repository.CategoryRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 

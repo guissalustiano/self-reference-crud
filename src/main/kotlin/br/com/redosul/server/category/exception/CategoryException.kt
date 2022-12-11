@@ -1,4 +1,4 @@
-package br.com.redosul.server.category
+package br.com.redosul.server.category.exception
 
 sealed class CategoryException: Exception() {
     data class NotFound(val id: Long) : CategoryException()

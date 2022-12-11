@@ -1,5 +1,6 @@
-package br.com.redosul.server.category;
+package br.com.redosul.server.category.repository;
 
+import br.com.redosul.server.category.Category
 import org.springframework.data.repository.CrudRepository
 
 interface CategoryRepository : CrudRepository<Category, Long> {

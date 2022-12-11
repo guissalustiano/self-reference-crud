@@ -1,6 +1,6 @@
 package br.com.redosul.server.product
 
-import br.com.redosul.server.base.LongIdEntity
+import br.com.redosul.server.base.entity.LongIdEntity
 import br.com.redosul.server.base.extension.toSlug
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

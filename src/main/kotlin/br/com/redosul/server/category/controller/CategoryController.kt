@@ -1,4 +1,4 @@
-package br.com.redosul.server.category
+package br.com.redosul.server.category.controller
 
 import br.com.redosul.server.category.message.CategoryCreateRequest
 import br.com.redosul.server.category.message.toEntity
@@ -7,7 +7,6 @@ import br.com.redosul.server.category.service.CategoryCreate
 import br.com.redosul.server.category.service.CategoryDelete
 import br.com.redosul.server.category.service.CategorySearchAll
 import br.com.redosul.server.category.service.CategoryFindOne
-import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping

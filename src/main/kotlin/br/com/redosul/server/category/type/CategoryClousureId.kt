@@ -1,4 +1,4 @@
-package br.com.redosul.server.category
+package br.com.redosul.server.category.type
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable

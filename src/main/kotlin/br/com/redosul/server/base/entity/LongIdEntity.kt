@@ -1,13 +1,13 @@
-package br.com.redosul.server.base
+package br.com.redosul.server.base.entity
 
 import jakarta.persistence.*
 import org.springframework.data.util.ProxyUtils
-import java.io.Serializable
 
 @MappedSuperclass
-abstract class EmbbededIdEntity<T: Serializable>(id: T? = null) : BaseEntity() {
-    @EmbeddedId
-    var id: T? = id
+abstract class LongIdEntity(id: Long) : BaseEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = id
         protected set
 
     override fun equals(other: Any?): Boolean {
@@ -17,10 +17,12 @@ abstract class EmbbededIdEntity<T: Serializable>(id: T? = null) : BaseEntity() {
 
         if (javaClass != ProxyUtils.getUserClass(other)) return false
 
-        other as EmbbededIdEntity<*>
+        other as LongIdEntity
 
-        return if (null == this.id) false else this.id == other.id
+        return if (!isPersisted()) false else this.id == other.id
     }
+
+    override fun isPersisted() = this.id != 0L
 
     override fun hashCode(): Int {
         return 31

@@ -1,6 +1,7 @@
 package br.com.redosul.server.category
 
-import br.com.redosul.server.base.EmbbededIdEntity
+import br.com.redosul.server.base.entity.EmbbededIdEntity
+import br.com.redosul.server.category.type.CategoryClousureId
 import jakarta.persistence.*
 
 
