@@ -19,6 +19,7 @@ create table category_clousure(
 
 create table product(
     id bigserial primary key,
+    category_id bigint not null references category(id),
     slug varchar(255) not null unique check (slug <> ''),
     code varchar(64) not null unique check (code <> ''),
     name varchar(255) not null unique check (name <> ''),

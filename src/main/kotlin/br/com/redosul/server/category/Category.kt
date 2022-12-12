@@ -3,6 +3,7 @@ package br.com.redosul.server.category
 import br.com.redosul.server.base.entity.LongIdEntity
 import br.com.redosul.server.base.type.*
 import br.com.redosul.server.category.type.CategoryId
+import br.com.redosul.server.product.Product
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
@@ -25,16 +26,26 @@ class Category(
         _parentConnections.add(connection)
     }
 
+    fun addProduct(product: Product) {
+        _products.add(product)
+    }
+
     @OneToMany(mappedBy = "child")
     private var _parentConnections: MutableList<CategoryClousure> = mutableListOf()
 
     @OneToMany(mappedBy = "parent")
     private var _childrenConnection: MutableList<CategoryClousure> = mutableListOf()
 
+    @OneToMany(mappedBy = "category")
+    private var _products: MutableList<Product> = mutableListOf()
+
     val parentConnections: List<CategoryClousure>
         get() = _parentConnections.toList()
 
     val childrenConnection: List<CategoryClousure>
+        get() = _childrenConnection.toList()
+
+    val products: List<CategoryClousure>
         get() = _childrenConnection.toList()
 
     private val selfConnection: CategoryClousure
