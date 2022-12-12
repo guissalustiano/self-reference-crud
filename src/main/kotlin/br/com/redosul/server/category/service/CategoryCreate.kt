@@ -23,10 +23,11 @@ class CategoryCreate(
         val newNodeDepth = parent?.let{it.depth + 1u} ?: 0u
 
         val child = categorySave(category).getOrThrow()
-        setKinship(child, parent)
+        val relations = setKinship(child, parent)
 
+        clousureRepository.saveAll(relations)
 
-        if (child.depth > 3u) {
+        if (child.depth >= 3u) {
             throw CategoryException.TooDepth(newNodeDepth)
         }
 
@@ -37,7 +38,7 @@ class CategoryCreate(
         child: Category,
         parent: Category?
     ): List<CategoryClousure> {
-        val parentReference = parent?.getId()?.let { clousureRepository.findAllByChildId(it.value) }?.map {
+        val parentReference = parent?.parentConnections?.map {
             CategoryClousure(
                 it.parent,
                 child,
@@ -53,7 +54,7 @@ class CategoryCreate(
 
         val references = listOf(selfReference) + parentReference
 
-        return clousureRepository.saveAll(references).onEach {
+        return references.onEach {
             parent?.addChildConnection(it)
             child.addParentConnection(it)
         }.toList()

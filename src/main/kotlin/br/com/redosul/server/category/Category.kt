@@ -31,10 +31,10 @@ class Category(
     @OneToMany(mappedBy = "parent")
     private var _childrenConnection: MutableList<CategoryClousure> = mutableListOf()
 
-    private val parentConnections: List<CategoryClousure>
+    val parentConnections: List<CategoryClousure>
         get() = _parentConnections.toList()
 
-    private val childrenConnection: List<CategoryClousure>
+    val childrenConnection: List<CategoryClousure>
         get() = _childrenConnection.toList()
 
     private val selfConnection: CategoryClousure
