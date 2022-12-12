@@ -40,7 +40,7 @@ class CategoryController(
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
         @RequestBody request: CategoryCreateRequest
-    ) = request.toIdAndCategory().let { (parentId, category) -> create(parentId, category) }.toCategoryResponse()
+    ) = request.toIdAndCategory().let { (parentId, category) -> create(parentId, category) }.getOrThrow().toCategoryResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.NO_CONTENT)

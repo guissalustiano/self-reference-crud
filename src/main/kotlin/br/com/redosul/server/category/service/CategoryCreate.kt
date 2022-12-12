@@ -18,7 +18,7 @@ class CategoryCreate(
     operator fun invoke(
         parentId: CategoryId?,
         category: Category
-    ): Category {
+    )= runCatching {
         val parent = parentId?.let { categoryFindOne(it).getOrThrow() }
         val newNodeDepth = parent?.let{it.depth + 1u} ?: 0u
 
@@ -30,7 +30,7 @@ class CategoryCreate(
             throw CategoryException.TooDepth(newNodeDepth)
         }
 
-        return child
+        child
     }
 
     private fun setKinship(
