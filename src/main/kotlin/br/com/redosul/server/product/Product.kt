@@ -18,4 +18,6 @@ class Product(
     @ManyToOne(fetch = FetchType.LAZY) var category: Category,
     @NaturalId var slug: Slug = name.toSlug(),
     id: ProductId = ProductId.ZERO,
-): LongIdEntity(id.value)
+): LongIdEntity(id.value) {
+    fun getId() = ProductId(id)
+}

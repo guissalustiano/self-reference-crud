@@ -1,6 +1,6 @@
 package br.com.redosul.server.category.controller
 
-import br.com.redosul.server.category.message.CategoryCreateRequest
+import br.com.redosul.server.category.message.CategoryCreatePayload
 import br.com.redosul.server.category.message.toIdAndCategory
 import br.com.redosul.server.category.message.toCategoryResponse
 import br.com.redosul.server.category.message.toCategoryWithChildrenResponse
@@ -39,7 +39,7 @@ class CategoryController(
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
-        @RequestBody request: CategoryCreateRequest
+        @RequestBody request: CategoryCreatePayload
     ) = request.toIdAndCategory().let { (parentId, category) -> create(parentId, category) }.getOrThrow().toCategoryResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

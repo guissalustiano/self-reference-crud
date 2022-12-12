@@ -6,7 +6,7 @@ import br.com.redosul.server.category.exception.CategoryException
 import br.com.redosul.server.category.type.CategoryId
 import com.fasterxml.jackson.annotation.JsonCreator
 
-data class CategoryCreateRequest(
+data class CategoryCreatePayload(
     val parentId: CategoryId?,
     val code: Code,
     val name: Name,
@@ -22,9 +22,9 @@ data class CategoryCreateRequest(
             name: String?,
             description: String?,
             slug: String?, // TODO: undefinable
-        ): CategoryCreateRequest {
+        ): CategoryCreatePayload {
             val tName = name?.let { Name(it).getOrThrow() } ?: throw CategoryException.Required.Name
-            return CategoryCreateRequest(
+            return CategoryCreatePayload(
                 parentId?.let { CategoryId(it) },
                 code?.let { Code(it).getOrThrow() } ?: throw CategoryException.Required.Code,
                 tName,
@@ -35,7 +35,7 @@ data class CategoryCreateRequest(
     }
 }
 
-fun CategoryCreateRequest.toIdAndCategory() = parentId to Category(
+fun CategoryCreatePayload.toIdAndCategory() = parentId to Category(
     code,
     name,
     description,
