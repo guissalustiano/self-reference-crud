@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/v1/categories")
 class CategoryController(
     private val findOne: CategoryFindOne,
-    private val findAll: CategorySearchAll,
+    private val findAll: CategoryFindAll,
     private val create: CategoryCreate,
     private val delete: CategoryDelete
 ) {

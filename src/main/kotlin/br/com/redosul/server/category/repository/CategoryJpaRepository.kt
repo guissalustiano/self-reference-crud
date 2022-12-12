@@ -10,10 +10,5 @@ interface CategoryJpaRepository : CrudRepository<Category, Long> {
     @EntityGraph(attributePaths = ["_parentConnections.parent", "_childrenConnection.child._parentConnections.parent"])
     override fun findById(id: Long): Optional<Category>
 
-    @EntityGraph(attributePaths = ["_parentConnections.parent"])
-    override fun findAll(): List<Category>
-
-    fun findByNameContainsIgnoreCase(name: String): List<Category>
-
     fun findByCodeOrNameOrSlugAllIgnoreCase(code: String, name: String, slug: String): Category?
 }
