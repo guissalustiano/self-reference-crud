@@ -35,7 +35,7 @@ data class CategoryCreateRequest(
     }
 }
 
-fun CategoryCreateRequest.toEntity() = parentId to Category(
+fun CategoryCreateRequest.toIdAndCategory() = parentId to Category(
     code,
     name,
     description,

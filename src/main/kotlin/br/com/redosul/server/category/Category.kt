@@ -6,7 +6,6 @@ import br.com.redosul.server.category.type.CategoryId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
-import org.hibernate.annotations.NaturalId
 
 
 @Entity
@@ -19,28 +18,41 @@ class Category(
 ): LongIdEntity(id.value) {
     fun getId() = CategoryId(id)
     fun addChildConnection(connection: CategoryClousure) {
-        _children.add(connection)
+        _childrenConnection.add(connection)
     }
 
     fun addParentConnection(connection: CategoryClousure) {
-        _parents.add(connection)
+        _parentConnections.add(connection)
     }
 
-    val depth: UInt
-        get() = _parents.first().depth
-
     @OneToMany(mappedBy = "child")
-    private var _parents: MutableList<CategoryClousure> = mutableListOf()
+    private var _parentConnections: MutableList<CategoryClousure> = mutableListOf()
 
     @OneToMany(mappedBy = "parent")
-    private var _children: MutableList<CategoryClousure> = mutableListOf()
+    private var _childrenConnection: MutableList<CategoryClousure> = mutableListOf()
 
-    private val parents: List<Category>
-        get() = _parents.map { it.parent }.filterNot { it == this }
+    private val parentConnections: List<CategoryClousure>
+        get() = _parentConnections.toList()
 
-    val parent: Category?
-        get() = parents.firstOrNull { it.depth > 0u && it.depth == depth - 1u }
+    private val childrenConnection: List<CategoryClousure>
+        get() = _childrenConnection.toList()
 
-    val children: List<Category>
-        get() = _children.map { it.child }.filterNot { it == this }
+    private val selfConnection: CategoryClousure
+        get() = parentConnections.first { it.parentId == getId() && it.childId == getId() }
+
+
+    val depth: UInt
+        get() = selfConnection.depth
+
+    val directParent: Category?
+        get() = parentConnections
+            .filterNot { it == selfConnection }
+            .map { it.parent }
+            .firstOrNull { it.depth == depth - 1u }
+
+    val directChildren: List<Category>
+        get() = childrenConnection.
+        filterNot { it == selfConnection }
+            .filter { it.depth == depth + 1u }
+            .map { it.child }
 }

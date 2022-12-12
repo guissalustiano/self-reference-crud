@@ -1,8 +1,9 @@
 package br.com.redosul.server.category.controller
 
 import br.com.redosul.server.category.message.CategoryCreateRequest
-import br.com.redosul.server.category.message.toEntity
-import br.com.redosul.server.category.message.toResponse
+import br.com.redosul.server.category.message.toIdAndCategory
+import br.com.redosul.server.category.message.toCategoryResponse
+import br.com.redosul.server.category.message.toCategoryWithChildrenResponse
 import br.com.redosul.server.category.service.*
 import br.com.redosul.server.category.type.CategoryId
 import org.springframework.http.HttpStatus
@@ -28,18 +29,18 @@ class CategoryController(
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun get(
         @RequestParam("name") nameQuery: String? = null
-    ) = findAll(nameQuery).map { it.toResponse() }
+    ) = findAll(nameQuery).map { it.toCategoryResponse() }
 
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getOne(
         @PathVariable("id") categoryId: Long
-    ) = findOne(CategoryId(categoryId)).getOrThrow().toResponse()
+    ) = findOne(CategoryId(categoryId)).getOrThrow().toCategoryWithChildrenResponse()
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
         @RequestBody request: CategoryCreateRequest
-    ) = request.toEntity().let { (parentId, category) -> create(parentId, category) }.toResponse()
+    ) = request.toIdAndCategory().let { (parentId, category) -> create(parentId, category) }.toCategoryResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.NO_CONTENT)

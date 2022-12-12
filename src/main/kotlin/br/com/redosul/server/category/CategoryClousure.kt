@@ -13,6 +13,9 @@ class CategoryClousure(
     val parentId: CategoryId
         get() = CategoryId(id.parentId)
 
+    val childId: CategoryId
+        get() = CategoryId(id.parentId)
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("parentId")
