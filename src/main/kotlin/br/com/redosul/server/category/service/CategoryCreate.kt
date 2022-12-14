@@ -11,27 +11,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class CategoryCreate(
-    private val categorySave: CategorySave,
     private val categoryFindOne: CategoryFindOne,
-    private val clousureRepository: CategoryClousureRepository,
 ) {
     operator fun invoke(
         parentId: CategoryId?,
-        category: Category
+        child: Category
     )= runCatching {
         val parent = parentId?.let { categoryFindOne(it).getOrThrow() }
-        val newNodeDepth = parent?.let{it.depth + 1u} ?: 0u
-
-        val child = categorySave(category).getOrThrow()
         val relations = setKinship(child, parent)
-
-        clousureRepository.saveAll(relations)
-
-        if (child.depth >= 3u) {
-            throw CategoryException.TooDepth(newNodeDepth)
-        }
-
-        child
+        Pair(child, relations)
     }
 
     private fun setKinship(

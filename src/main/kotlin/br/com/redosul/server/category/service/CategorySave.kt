@@ -1,18 +1,19 @@
 package br.com.redosul.server.category.service
 
 import br.com.redosul.server.category.Category
+import br.com.redosul.server.category.CategoryClousure
 import br.com.redosul.server.category.exception.CategoryException
 import br.com.redosul.server.category.repository.CategoryRepository
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CategorySave(
     private val repository: CategoryRepository,
 ) {
     operator fun invoke(
-        category: Category
+        category: Category,
+        clousures: List<CategoryClousure>
     ) = runCatching {
         guard(category)
         repository.save(category)
@@ -25,6 +26,10 @@ class CategorySave(
     }
 
     private fun guard(category: Category) {
+        if (category.depth >= 3u) {
+            throw CategoryException.TooDepth(category.depth)
+        }
+
         repository.findByCodeOrNameOrSlugAllIgnoreCase(category.code, category.name, category.slug)?.let {
             if (it.getId() != category.getId()) {
                 if (it.code == category.code) {

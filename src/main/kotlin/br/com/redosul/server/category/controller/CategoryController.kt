@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController(
     private val findOne: CategoryFindOne,
     private val findAll: CategoryFindAll,
-    private val create: CategoryCreate,
+    private val create: CategoryCreateThenSave,
     private val delete: CategoryDelete
 ) {
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -39,8 +39,8 @@ class CategoryController(
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
-        @RequestBody request: CategoryCreatePayload
-    ) = request.toIdAndCategory().let { (parentId, category) -> create(parentId, category) }.getOrThrow().toCategoryResponse()
+        @RequestBody payload: CategoryCreatePayload
+    ) = create(payload).getOrThrow().toCategoryResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.NO_CONTENT)
