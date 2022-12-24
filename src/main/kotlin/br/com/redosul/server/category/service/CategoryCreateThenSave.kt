@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional
 class CategoryCreateThenSave(
     private val create: CategoryCreate,
     private val save: CategorySave,
+    private val categoryFindOne: CategoryFindOne,
 ) {
     operator fun invoke(
         payload: CategoryCreatePayload,
     ) = runCatching {
         val (parentId, children) =  payload.toIdAndCategory()
-        create(parentId, children).getOrThrow()
+        val parent = parentId?.let { categoryFindOne(it).getOrThrow() }
+        create(parent, children).getOrThrow()
     }.mapCatching {
         save(it.first, it.second).getOrThrow()
     }

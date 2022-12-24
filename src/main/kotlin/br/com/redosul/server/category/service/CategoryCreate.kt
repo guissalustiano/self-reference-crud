@@ -10,14 +10,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CategoryCreate(
-    private val categoryFindOne: CategoryFindOne,
-) {
+class CategoryCreate {
     operator fun invoke(
-        parentId: CategoryId?,
+        parent: Category?,
         child: Category
     )= runCatching {
-        val parent = parentId?.let { categoryFindOne(it).getOrThrow() }
         val relations = setKinship(child, parent)
         Pair(child, relations)
     }
