@@ -17,16 +17,6 @@ class Category(
     @Column var slug: Slug = name.toSlug(),
     id: CategoryId = CategoryId.ZERO,
 ): LongIdEntity(id.value) {
-    init {
-        val selfReference = CategoryClousure(
-            this,
-            this,
-            0u
-        )
-
-        addChildConnection(selfReference)
-        addParentConnection(selfReference)
-    }
 
     @OneToMany(
         cascade = [CascadeType.ALL],
@@ -49,10 +39,21 @@ class Category(
     )
     private var _products: MutableList<Product> = mutableListOf()
 
+    init {
+        val selfReference = CategoryClousure(
+            this,
+            this,
+            0u
+        )
+        this.addChildConnection(selfReference)
+        this.addParentConnection(selfReference)
+    }
+
+
     fun getId() = CategoryId(id)
 
-    val products: List<CategoryClousure>
-        get() = _childrenConnection.toList()
+    val products: Set<CategoryClousure>
+        get() = _childrenConnection.toSet()
 
     private fun addChildConnection(connection: CategoryClousure) {
         _childrenConnection.add(connection)
@@ -66,11 +67,11 @@ class Category(
         _products.add(product)
     }
 
-    private val parentConnections: List<CategoryClousure>
-        get() = _parentConnections.toList()
+    private val parentConnections: Set<CategoryClousure>
+        get() = _parentConnections.toSet()
 
-    private val childrenConnection: List<CategoryClousure>
-        get() = _childrenConnection.toList()
+    private val childrenConnection: Set<CategoryClousure>
+        get() = _childrenConnection.toSet()
 
     private val selfConnection: CategoryClousure
         get() = parentConnections.first { it.parentId == getId() && it.childId == getId() }
@@ -79,17 +80,20 @@ class Category(
     val depth: UInt
         get() = selfConnection.depth
 
-    val directParent: Category?
-        get() = parentConnections
-            .filterNot { it == selfConnection }
-            .map { it.parent }
+    val allParents: Set<Category>
+        get() = parentConnections.filterNot { it == selfConnection }.map { it.parent }.toSet()
+
+    val allChildrens: Set<Category>
+        get() = childrenConnection.filterNot { it == selfConnection }.map { it.child }.toSet()
+
+
+    val parent: Category?
+        get() = allParents
             .firstOrNull { it.depth == depth - 1u }
 
-    val directChildren: List<Category>
-        get() = childrenConnection.
-        filterNot { it == selfConnection }
-            .filter { it.depth == depth + 1u }
-            .map { it.child }
+    val children: Set<Category>
+        get() = allChildrens
+            .filter { it.depth == depth + 1u }.toSet()
 
     fun addChildren(
         child: Category,
@@ -107,4 +111,6 @@ class Category(
             it.parent.addChildConnection(it)
         }
     }
+
+    companion object {}
 }

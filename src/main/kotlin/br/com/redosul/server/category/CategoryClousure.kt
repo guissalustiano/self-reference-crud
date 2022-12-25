@@ -6,7 +6,8 @@ import br.com.redosul.server.category.type.CategoryId
 import jakarta.persistence.*
 
 @Entity
-// never use direct, only by Category
+// Teoric is a nested private class from category, and cannot be used directly
+// but because of JPA limitantions, we need to use this class as a separated entity
 class CategoryClousure(
     id: CategoryClousureId = CategoryClousureId.ZERO,
     @Column var depth: UInt

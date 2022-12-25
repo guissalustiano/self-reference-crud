@@ -17,6 +17,6 @@ class CategoryCreate(
         val (parentId, children) =  payload.toIdAndCategory()
         val parent = parentId?.let { categoryFindOne(it).getOrThrow() }
         parent?.addChildren(children)
-        save(children)
+        save(children).getOrThrow()
     }
 }

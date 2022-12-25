@@ -22,12 +22,12 @@ data class CategoryWithChildrenResponse(
 )
 
 fun Category.toCategoryWithChildrenResponse() = CategoryWithChildrenResponse(
-    directParent?.getId(),
+    parent?.getId(),
     getId(),
     code,
     name,
     description,
-    directChildren.map { it.toCategoryResponse() },
+    children.map { it.toCategoryResponse() },
     depth,
     slug,
     createdAt,

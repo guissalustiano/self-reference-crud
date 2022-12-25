@@ -21,7 +21,7 @@ data class CategoryResponse(
 )
 
 fun Category.toCategoryResponse() = CategoryResponse(
-    directParent?.getId(),
+    parent?.getId(),
     getId(),
     code,
     name,
