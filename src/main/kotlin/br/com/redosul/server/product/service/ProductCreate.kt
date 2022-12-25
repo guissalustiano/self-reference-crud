@@ -15,10 +15,9 @@ class ProductCreate(
     private val categoryFindOne: CategoryFindOne,
 ) {
     operator fun invoke(payload: ProductCreatePayload): Product {
-        val category = categoryFindOne(payload.categoryId).getOrThrow()
-        val product = payload.toProduct{ category }
-
-        category.addProduct(product)
+        val product = payload.toProduct{
+                categoryId -> categoryFindOne(categoryId).getOrThrow()
+        }
         return repository.save(product)
     }
 }

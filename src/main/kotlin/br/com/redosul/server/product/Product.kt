@@ -19,5 +19,11 @@ class Product(
     @NaturalId var slug: Slug = name.toSlug(),
     id: ProductId = ProductId.ZERO,
 ): LongIdEntity(id.value) {
+    init {
+        category.addProduct(this)
+    }
+
     fun getId() = ProductId(id)
+
+    companion object {}
 }
