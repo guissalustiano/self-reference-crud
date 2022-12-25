@@ -1,7 +1,6 @@
 package br.com.redosul.server.category.controller
 
 import br.com.redosul.server.category.message.CategoryCreatePayload
-import br.com.redosul.server.category.message.toIdAndCategory
 import br.com.redosul.server.category.message.toCategoryResponse
 import br.com.redosul.server.category.message.toCategoryWithChildrenResponse
 import br.com.redosul.server.category.service.*
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController(
     private val findOne: CategoryFindOne,
     private val findAll: CategoryFindAll,
-    private val create: CategoryCreateThenSave,
+    private val create: CategoryCreate,
     private val delete: CategoryDelete
 ) {
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])

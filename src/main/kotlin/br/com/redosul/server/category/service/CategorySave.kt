@@ -12,8 +12,7 @@ class CategorySave(
     private val repository: CategoryRepository,
 ) {
     operator fun invoke(
-        category: Category,
-        clousures: List<CategoryClousure>
+        category: Category
     ) = runCatching {
         guard(category)
         repository.save(category)

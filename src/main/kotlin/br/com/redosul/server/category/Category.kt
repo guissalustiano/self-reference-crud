@@ -4,10 +4,10 @@ import br.com.redosul.server.base.entity.LongIdEntity
 import br.com.redosul.server.base.type.*
 import br.com.redosul.server.category.type.CategoryId
 import br.com.redosul.server.product.Product
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
-
 
 @Entity
 class Category(
@@ -17,12 +17,48 @@ class Category(
     @Column var slug: Slug = name.toSlug(),
     id: CategoryId = CategoryId.ZERO,
 ): LongIdEntity(id.value) {
+    init {
+        val selfReference = CategoryClousure(
+            this,
+            this,
+            0u
+        )
+
+        addChildConnection(selfReference)
+        addParentConnection(selfReference)
+    }
+
+    @OneToMany(
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        mappedBy = "child"
+    )
+    private var _parentConnections: MutableList<CategoryClousure> = mutableListOf()
+
+    @OneToMany(
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        mappedBy = "parent"
+    )
+    private var _childrenConnection: MutableList<CategoryClousure> = mutableListOf()
+
+    @OneToMany(
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        mappedBy = "category"
+    )
+    private var _products: MutableList<Product> = mutableListOf()
+
     fun getId() = CategoryId(id)
-    fun addChildConnection(connection: CategoryClousure) {
+
+    val products: List<CategoryClousure>
+        get() = _childrenConnection.toList()
+
+    private fun addChildConnection(connection: CategoryClousure) {
         _childrenConnection.add(connection)
     }
 
-    fun addParentConnection(connection: CategoryClousure) {
+    private fun addParentConnection(connection: CategoryClousure) {
         _parentConnections.add(connection)
     }
 
@@ -30,22 +66,10 @@ class Category(
         _products.add(product)
     }
 
-    @OneToMany(mappedBy = "child")
-    private var _parentConnections: MutableList<CategoryClousure> = mutableListOf()
-
-    @OneToMany(mappedBy = "parent")
-    private var _childrenConnection: MutableList<CategoryClousure> = mutableListOf()
-
-    @OneToMany(mappedBy = "category")
-    private var _products: MutableList<Product> = mutableListOf()
-
-    val parentConnections: List<CategoryClousure>
+    private val parentConnections: List<CategoryClousure>
         get() = _parentConnections.toList()
 
-    val childrenConnection: List<CategoryClousure>
-        get() = _childrenConnection.toList()
-
-    val products: List<CategoryClousure>
+    private val childrenConnection: List<CategoryClousure>
         get() = _childrenConnection.toList()
 
     private val selfConnection: CategoryClousure
@@ -66,4 +90,21 @@ class Category(
         filterNot { it == selfConnection }
             .filter { it.depth == depth + 1u }
             .map { it.child }
+
+    fun addChildren(
+        child: Category,
+    ) {
+        child.selfConnection.depth = depth + 1u
+
+        parentConnections.map {
+            CategoryClousure(
+                it.parent,
+                child,
+                it.depth + 1u
+            )
+        }.onEach {
+            child.addParentConnection(it)
+            it.parent.addChildConnection(it)
+        }
+    }
 }

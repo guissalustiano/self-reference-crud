@@ -6,6 +6,7 @@ import br.com.redosul.server.category.type.CategoryId
 import jakarta.persistence.*
 
 @Entity
+// never use direct, only by Category
 class CategoryClousure(
     id: CategoryClousureId = CategoryClousureId.ZERO,
     @Column var depth: UInt
