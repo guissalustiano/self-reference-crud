@@ -26,20 +26,18 @@ class CategoryController(
     private val delete: CategoryDelete
 ) {
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun get(
-        @RequestParam("name") nameQuery: String? = null
-    ) = findAll(nameQuery).map { it.toCategoryResponse() }
+    fun get() = findAll().map { it.toCategoryResponse() }
 
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getOne(
         @PathVariable("id") categoryId: Long
-    ) = findOne(CategoryId(categoryId)).getOrThrow().toCategoryWithChildrenResponse()
+    ) = findOne(CategoryId(categoryId))?.toCategoryWithChildrenResponse()
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun post(
         @RequestBody payload: CategoryCreatePayload
-    ) = create(payload).getOrThrow().toCategoryResponse()
+    ) = create(payload).toCategoryResponse()
 
     @DeleteMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.NO_CONTENT)

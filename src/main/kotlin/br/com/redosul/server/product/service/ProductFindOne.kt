@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service
 class ProductFindOne(
     private val repository: ProductRepository
 ) {
-    operator fun invoke(id: ProductId) = repository.findById(id) ?: throw ProductException.NotFound(id)
+    operator fun invoke(id: ProductId) = repository.findById(id)
 }

@@ -23,13 +23,13 @@ data class CategoryCreatePayload(
             description: String?,
             slug: String?, // TODO: undefinable
         ): CategoryCreatePayload {
-            val tName = name?.let { Name(it).getOrThrow() } ?: throw CategoryException.Required.Name
+            val tName = name?.let { Name(it) } ?: throw CategoryException.Required.Name
             return CategoryCreatePayload(
                 parentId?.let { CategoryId(it) },
-                code?.let { Code(it).getOrThrow() } ?: throw CategoryException.Required.Code,
+                code?.let { Code(it) } ?: throw CategoryException.Required.Code,
                 tName,
                 description?.let { Description(it) },
-                slug?.let { Slug(it).getOrThrow() } ?: tName.toSlug(),
+                slug?.let { Slug(it) } ?: tName.toSlug(),
             )
         }
     }

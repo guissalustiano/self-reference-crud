@@ -10,6 +10,9 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.ManyToOne
 import org.hibernate.annotations.NaturalId
 
+// TODO: separate in base product, product variant and provider
+// think about inventory, onder and supplier
+
 @Entity
 class Product(
     @NaturalId var code: Code,

@@ -1,5 +1,6 @@
 package br.com.redosul.server.product.service
 
+import br.com.redosul.server.category.exception.CategoryException
 import br.com.redosul.server.category.service.CategoryFindOne
 import br.com.redosul.server.product.Product
 import br.com.redosul.server.product.message.ProductCreatePayload
@@ -16,7 +17,7 @@ class ProductCreate(
 ) {
     operator fun invoke(payload: ProductCreatePayload): Product {
         val product = payload.toProduct{
-                categoryId -> categoryFindOne(categoryId).getOrThrow()
+                categoryId -> categoryFindOne(categoryId) ?: throw CategoryException.NotFound(categoryId)
         }
         return repository.save(product)
     }

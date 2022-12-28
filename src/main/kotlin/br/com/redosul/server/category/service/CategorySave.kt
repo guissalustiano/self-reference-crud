@@ -13,15 +13,14 @@ class CategorySave(
 ) {
     operator fun invoke(
         category: Category
-    ) = runCatching {
+    ): Category {
         guard(category)
-        repository.save(category)
-    }.recoverCatching { e ->
-        // rare cases of race condition
-        if (e is ConstraintViolationException) {
+
+        try {
+            return repository.save(category)
+        } catch (e: ConstraintViolationException) {
             handleConstraintException(e, category)
         }
-        throw e
     }
 
     private fun guard(category: Category) {

@@ -11,7 +11,5 @@ class CategoryFindOne(
 ) {
     operator fun invoke(
         categoryId: CategoryId
-    ) = runCatching {
-        repository.findById(categoryId) ?: throw CategoryException.NotFound(categoryId)
-    }
+    ) = repository.findById(categoryId)
 }

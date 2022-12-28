@@ -7,7 +7,5 @@ import org.springframework.stereotype.Service
 class CategoryFindAll(
     private val repository: CategoryRepository
 ) {
-    operator fun invoke(
-        nameQuery: String? = null
-    ) = repository.findAllRoots()
+    operator fun invoke() = repository.findAllRoots()
 }
