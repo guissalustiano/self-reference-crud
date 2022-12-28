@@ -17,7 +17,7 @@ class CategoryCreate(
         payload: CategoryCreatePayload,
     ): Category {
         val (parentId, children) =  payload.toIdAndCategory()
-        val parent = parentId?.let { categoryFindOne(it) ?: throw CategoryException.NotFound(it) }
+        val parent = parentId?.let { categoryFindOne(it)}
         parent?.addChildren(children)
         return save(children)
     }

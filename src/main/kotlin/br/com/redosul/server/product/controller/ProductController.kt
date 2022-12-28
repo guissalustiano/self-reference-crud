@@ -29,7 +29,7 @@ class ProductController(
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getOne(
         @PathVariable("id") productId: Long
-    ) = productFindOne(ProductId(productId))?.toProductResponse()
+    ) = productFindOne(ProductId(productId)).toProductResponse()
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)

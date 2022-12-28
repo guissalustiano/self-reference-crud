@@ -17,7 +17,7 @@ class ProductCreate(
 ) {
     operator fun invoke(payload: ProductCreatePayload): Product {
         val product = payload.toProduct{
-                categoryId -> categoryFindOne(categoryId) ?: throw CategoryException.NotFound(categoryId)
+                categoryId -> categoryFindOne(categoryId)
         }
         return repository.save(product)
     }

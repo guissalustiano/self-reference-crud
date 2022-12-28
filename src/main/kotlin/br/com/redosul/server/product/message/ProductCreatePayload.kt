@@ -24,13 +24,13 @@ data class ProductCreatePayload(
             description: String?,
             slug: String?, // TODO: undefinable
         ): ProductCreatePayload {
-            val tName = name?.let { Name(it).getOrThrow() } ?: throw CategoryException.Required.Name
+            val tName = name?.let { Name(it) } ?: throw CategoryException.Required.Name
             return ProductCreatePayload(
                 categoryId?.let { CategoryId(it) } ?: throw CategoryException.NotFound(CategoryId.ZERO),
-                code?.let { Code(it).getOrThrow() } ?: throw CategoryException.Required.Code,
+                code?.let { Code(it) } ?: throw CategoryException.Required.Code,
                 tName,
                 description?.let { Description(it) },
-                slug?.let { Slug(it).getOrThrow() } ?: tName.toSlug(),
+                slug?.let { Slug(it) } ?: tName.toSlug(),
             )
         }
     }
