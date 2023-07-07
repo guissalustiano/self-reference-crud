@@ -12,3 +12,6 @@ spring:
   jackson:
     deserialization:
       USE_LONG_FOR_INTS: true
+  flyway:
+    clean-on-validation-error: true
+    clean-disabled: false
